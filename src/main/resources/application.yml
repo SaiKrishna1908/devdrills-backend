@@ -1,0 +1,20 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.${AWS_COGNITO_REGION}.amazonaws.com/${AWS_COGNITO_USER_POOL_ID}
+          jwk-set-uri: https://cognito-idp.${AWS_COGNITO_REGION}.amazonaws.com/${AWS_COGNITO_USER_POOL_ID}/.well-known/jwks.json
+
+google:
+  ai:
+    api-key: ${GEMINI_API_KEY}
+aws:
+  cognito:
+    userPoolId: ${AWS_COGNITO_USER_POOL_ID}
+    region: ${AWS_COGNITO_REGION}
+    clientId: ${AWS_COGNITO_CLIENT_ID}
+    clientSecret: ${AWS_COGNITO_CLIENT_SECRET}
+
+sample:
+  jwe-key-value: classpath:key.priv
