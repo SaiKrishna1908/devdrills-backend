@@ -6,7 +6,6 @@ import com.krishna.devdrills.dto.response.LoginResponse;
 import com.krishna.devdrills.dto.response.RegisterResponse;
 import com.krishna.devdrills.service.CognitoService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
