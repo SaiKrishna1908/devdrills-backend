@@ -1,11 +1,11 @@
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+FROM eclipse-temurin:17-jdk-focal
+
 WORKDIR /app
-COPY pom.xml .
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+
 COPY src ./src
-RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/devdrills-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-
+CMD ["./mvnw", "spring-boot:run"]
