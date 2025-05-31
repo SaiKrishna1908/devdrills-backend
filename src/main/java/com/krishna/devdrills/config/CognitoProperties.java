@@ -12,4 +12,6 @@ public class CognitoProperties {
     private String clientId;
     private String userPoolId;
     private String clientSecret;
+    private String domain;
+    private String redirectUri;
 }

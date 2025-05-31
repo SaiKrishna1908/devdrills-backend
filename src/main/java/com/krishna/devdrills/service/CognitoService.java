@@ -3,6 +3,7 @@ package com.krishna.devdrills.service;
 import com.krishna.devdrills.config.CognitoProperties;
 import com.krishna.devdrills.dto.response.LoginResponse;
 import com.krishna.devdrills.dto.response.RegisterResponse;
+import com.krishna.devdrills.exception.TokenExchangeException;
 import com.krishna.devdrills.utils.CognitoSecretHash;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -79,5 +80,37 @@ public class CognitoService {
             }
         });
     }
-}
 
+    public Mono<LoginResponse> getTokenByCode(String code) {
+        return Mono.fromCallable(() -> {
+
+            String tokenEndpoint = String.format("https://%s.auth.%s.amazoncognito.com/oauth2/token", cognitoProperties.getDomain(), cognitoProperties.getRegion());
+            String clientId = cognitoProperties.getClientId();
+            String clientSecret = cognitoProperties.getClientSecret();
+
+            String credentials = java.util.Base64.getEncoder().encodeToString((clientId + ":" + clientSecret).getBytes());
+
+            java.net.http.HttpClient httpClient = java.net.http.HttpClient.newHttpClient();
+            String body = String.format(
+                "grant_type=authorization_code&code=%s&redirect_uri=%s",
+                java.net.URLEncoder.encode(code, java.nio.charset.StandardCharsets.UTF_8),
+                cognitoProperties.getRedirectUri()
+            );
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                .uri(java.net.URI.create(tokenEndpoint))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Authorization", "Basic " + credentials)
+                .POST(java.net.http.HttpRequest.BodyPublishers.ofString(body))
+                .build();
+
+                java.net.http.HttpResponse<String> response = httpClient.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+                if (response.statusCode() != 200) {
+                    throw new TokenExchangeException(response.body(), response.statusCode());
+                }
+                com.fasterxml.jackson.databind.JsonNode json = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response.body());
+                String accessToken = json.get("access_token").asText();
+                return new LoginResponse(accessToken);
+
+        });
+    }
+}

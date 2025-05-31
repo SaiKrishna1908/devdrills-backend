@@ -30,4 +30,9 @@ public class AuthController {
                         .signIn(request.getUsername(), request.getPassword());
 
     }
+
+    @GetMapping("/authenticate/{code}")
+    public Mono<LoginResponse> authenticate(@PathVariable String code) {
+        return cognitoService.getTokenByCode(code);
+    }
 }
