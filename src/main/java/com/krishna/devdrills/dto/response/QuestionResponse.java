@@ -18,4 +18,5 @@ public class QuestionResponse {
     public String option2;
     public String option3;
     public String option4;
+    public List<String> options;
 }

@@ -19,6 +19,7 @@ public class SecurityConfig {
         http
             .cors(ServerHttpSecurity.CorsSpec::disable) // Disable CORS
             .authorizeExchange(exchange -> exchange
+                .pathMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .pathMatchers("/api/auth/register", "/api/auth/signin", "/api/auth/authenticate/**").permitAll()
                 .anyExchange().authenticated()
             )

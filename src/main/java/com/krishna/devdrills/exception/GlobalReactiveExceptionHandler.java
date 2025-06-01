@@ -36,6 +36,8 @@ public class GlobalReactiveExceptionHandler implements WebExceptionHandler {
             message = "An unexpected error occurred.";
         }
 
+        ex.printStackTrace();
+
         exchange.getResponse().setStatusCode(status);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
         Map<String, Object> body = new HashMap<>();

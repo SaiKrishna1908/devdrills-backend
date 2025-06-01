@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GeminiService {
@@ -69,7 +70,14 @@ public class GeminiService {
         return response.handle((s, sink) -> {
             try {
                 String validJson = extractJson(s);
-                sink.next(objectMapper.readValue(validJson, new TypeReference<List<QuestionResponse>>() {}));
+                sink.next(objectMapper.readValue(validJson, new TypeReference<List<QuestionResponse>>() {})
+                        .stream()
+                        .peek(questionResponse -> questionResponse.setOptions(List.of(
+                                questionResponse.getOption1(),
+                                questionResponse.getOption2(),
+                                questionResponse.getOption3(),
+                                questionResponse.getOption4()
+                        ))).toList());
             } catch (Exception e) {
                 sink.error(new RuntimeException("Failed to parse JSON", e));
             }
