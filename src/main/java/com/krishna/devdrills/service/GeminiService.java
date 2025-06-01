@@ -56,9 +56,13 @@ public class GeminiService {
                 "  \\\"expectedAnswer\\\": \\\"Binary Search\\\",\n" +
                 "  \\\"notes\\\": \\\"Detailed Notes here\\\",\n" +
                 "  \\\"examples\\\": [\\\"Real world frameworks which use this framework and how they use it\\\"]\n" +
+                "  \\\"option1\\\": \\\"Option 1\\\",\n" +
+                "  \\\"option2\\\": \\\"Option 2\\\",\n" +
+                "  \\\"option3\\\": \\\"Option 3\\\",\n" +
+                "  \\\"option4\\\": \\\"Option 4\\\",\n" +
                 "}\n" +
                 "\n" +
-                "Generate a JSON array containing 1 such objects.";
+                "Generate a JSON array containing 5 such objects.";
 
         var response = geminiWebClientService.callGemini(prompt);
 

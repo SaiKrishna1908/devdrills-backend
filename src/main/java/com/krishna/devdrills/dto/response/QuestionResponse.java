@@ -14,4 +14,8 @@ public class QuestionResponse {
     public String expectedAnswer;
     public String notes;
     public List<String> examples;
+    public String option1;
+    public String option2;
+    public String option3;
+    public String option4;
 }
