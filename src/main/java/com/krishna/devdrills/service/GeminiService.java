@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krishna.devdrills.dto.response.QuestionResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -18,6 +19,8 @@ public class GeminiService {
     private final ObjectMapper objectMapper;
     private final GeminiWebClientService geminiWebClientService;
 
+    @Value("${app.ai.prompt}")
+    private String systemPrompt;
 
     public GeminiService(GeminiWebClientService webClient) {
         this.objectMapper = new ObjectMapper();
@@ -25,47 +28,8 @@ public class GeminiService {
     }
 
     public Mono<List<QuestionResponse>> getNextQuestion() throws IOException {
-        String prompt = "Imagine you are a senior software developer and you have to give accessing a junior software developers knowledge by giving them real world scenarios where algorithms and DSA used.\n" +
-                "\n" +
-                "\n" +
-                "You have to give them a read world SITUATION and the dev should be able to solve that situation with a action that requires a use of fundamental Comouter Science Algorithm or a Data Structure. Explain the SITUATION in detail with no less than 100 characters\n" +
-                "\n" +
-                "\n" +
-                "The Situation should be of such a kind that the dev should be able to answer it in 2 - 5 words.\n" +
-                "\n" +
-                "\n" +
-                "Also give a short description on how this algorithm can be useful and give examples of popular frameworks use this algorithm at its core.\n" +
-                "\n" +
-                "\n" +
-                "For example:\n" +
-                "\n" +
-                "\n" +
-                "A simple situation would look like this\n" +
-                "\n" +
-                "\n" +
-                "Your team is building a feature to quickly find a specific product by its unique ID from a massive list. What algorithm comes to mind?\n" +
-                "\n" +
-                "So the expected answer should be something like this\n" +
-                "\n" +
-                " I will sort the products by uniqueId while insertion I will maintain this order and use binary search for quick search." +
-                "\n" +
-                "Your response MUST be a valid JSON array of objects, where each object has the following keys: 'situation' (string), 'expectedAnswer' (string), 'notes' (string), and 'examples' (array of strings). Do not include any other text or explanations outside of this JSON structure.\n" +
-                "\n" +
-                "For example, a single JSON object in the array should look like this:\n" +
-                "{\n" +
-                "  \\\"situation\\\": \\\"Detailed Explanation here\\\",\n" +
-                "  \\\"expectedAnswer\\\": \\\"Binary Search\\\",\n" +
-                "  \\\"notes\\\": \\\"Detailed Notes here\\\",\n" +
-                "  \\\"examples\\\": [\\\"Real world frameworks which use this framework and how they use it\\\"]\n" +
-                "  \\\"option1\\\": \\\"Option 1\\\",\n" +
-                "  \\\"option2\\\": \\\"Option 2\\\",\n" +
-                "  \\\"option3\\\": \\\"Option 3\\\",\n" +
-                "  \\\"option4\\\": \\\"Option 4\\\",\n" +
-                "}\n" +
-                "\n" +
-                "Generate a JSON array containing 5 such objects.";
 
-        var response = geminiWebClientService.callGemini(prompt);
+        var response = geminiWebClientService.callGemini(systemPrompt);
 
         return response.handle((s, sink) -> {
             try {

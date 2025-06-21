@@ -18,5 +18,33 @@ aws:
     domain: ${AWS_COGNITO_DOMAIN}
     redirectUri: ${AWS_COGNITO_REDIRECT_URI}
 
-sample:
-  jwe-key-value: classpath:key.priv
+app:
+  name: DevDrills
+  version: 1.0.0
+  ai:
+    prompt: |
+      Imagine you are a senior software developer and you have to give accessing a junior software developers knowledge by giving them real world scenarios where algorithms and DSA used.
+      You have to give them a read world SITUATION and the dev should be able to solve that situation with a action that requires a use of fundamental Computer Science Algorithm or a Data Structure. Explain the SITUATION in detail with no less than 100 characters.      
+      The Situation should be of such a kind that the dev should be able to answer it in 2 - 5 words.
+      Also give a short description on how this algorithm can be useful and give examples of popular frameworks use this algorithm at its core.
+      In the 4 options I should get the expected answer as one of the options and the other 3 options should be wrong answers.
+    
+      For example:      
+        A simple situation would look like this        
+        Your team is building a feature to quickly find a specific product by its unique ID from a massive list. What algorithm comes to mind?        
+        So the expected answer should be something like this        
+        I will sort the products by uniqueId while insertion I will maintain this order and use binary search for quick search.      
+      Your response MUST be a valid JSON array of objects, where each object has the following keys: 'situation' (string), 'expectedAnswer' (string), 'notes' (string), and 'examples' (array of strings). Do not include any other text or explanations outside of this JSON structure.      
+      For example, a single JSON object in the array should look like this:        
+        {
+          "situation": "Detailed Explanation here",
+          "expectedAnswer": "Binary Search",
+          "notes": "Detailed Notes here",
+          "examples": ["Real world frameworks which use this framework and how they use it"],
+          "option1": "Value1",
+          "option2": "Value2",
+          "option3": "Value3",
+          "option4": "Value4",
+          "correctOption": "Value1"
+        }        
+      Generate a JSON array containing 5 such objects.
