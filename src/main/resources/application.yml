@@ -18,6 +18,15 @@ aws:
     domain: ${AWS_COGNITO_DOMAIN}
     redirectUri: ${AWS_COGNITO_REDIRECT_URI}
 
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:keystore.p12
+    key-store-password: ${KEY_STORE_PASSWORD}
+    key-alias: ${KEY_ALIAS}
+
 app:
   name: DevDrills
   version: 1.0.0
