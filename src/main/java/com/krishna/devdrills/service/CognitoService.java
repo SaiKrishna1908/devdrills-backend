@@ -47,6 +47,7 @@ public class CognitoService {
                 return Mono.just(registerResponse);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
+                
                 throw new RuntimeException("Error during user registration: ");
             }
         } catch (UsernameExistsException e) {
@@ -106,6 +107,7 @@ public class CognitoService {
 
                 java.net.http.HttpResponse<String> response = httpClient.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
                 if (response.statusCode() != 200) {
+                    System.err.println("Error exchanging token: " + response.body());
                     throw new TokenExchangeException(response.body(), response.statusCode());
                 }
                 com.fasterxml.jackson.databind.JsonNode json = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response.body());
