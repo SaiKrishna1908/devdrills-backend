@@ -46,6 +46,7 @@ public class CognitoService {
                 RegisterResponse registerResponse = new RegisterResponse(response.userSub());
                 return Mono.just(registerResponse);
             } catch (Exception e) {
+                System.err.println(e.getMessage());
                 throw new RuntimeException("Error during user registration: ");
             }
         } catch (UsernameExistsException e) {
