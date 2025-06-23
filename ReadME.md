@@ -39,3 +39,13 @@ Delete Docker Image
 ```
 docker rmi <image_id>
 ```
+
+```
+Add a 'A' Record in DNS pointing to your server's IP address
+```
+
+Generate SSL Certificates for https
+
+```
+sudo certbot certonly --standalone -d devdrills.kitty1908.website
+```
